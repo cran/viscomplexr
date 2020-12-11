@@ -5,8 +5,9 @@ knitr::opts_chunk$set(
 )
 
 # This option anti-aliases the plots made below under Windows
-if(Sys.info()[["sysname"]] == "Windows")
-  knitr::opts_chunk$set(dev.args = list(type = "cairo"))
+if(Sys.info()[["sysname"]] == "Windows") {
+  knitr::opts_chunk$set(dev = "CairoPNG")
+}
 
 options(rmarkdown.html_vignette.check_title = FALSE)
 
@@ -51,16 +52,16 @@ par(op) # reset the graphics parameters to their previous values
 #                nCores = 2) # Increase or leave out for higher performance
 #  par(op) # reset the graphics parameters to their previous values
 
-## ----figure_4, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with three different settings of `pi2Div` and `pType = "pa"`.'----
-# divide graphics device into three regions and adjust plot margins 
-op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
-for(n in c(6, 9, 18)) {
-  phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
-                pi2Div = n, pType = "pa", axes = FALSE, nCores = 2)
-  # separate title call (R base graphics) for nicer line adjustment, just cosmetics
-  title(paste("pi2Div =", n), line = -1.2) 
-}
-par(op) # reset graphics parameters to previous values
+## ----eval = FALSE, figure_4, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with three different settings of `pi2Div` and `pType = "pa"`.'----
+#  # divide graphics device into three regions and adjust plot margins
+#  op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
+#  for(n in c(6, 9, 18)) {
+#    phasePortrait("(3+2i+z)*(-5+5i+z)/(-2-2i+z)^2", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
+#                  pi2Div = n, pType = "pa", axes = FALSE, nCores = 2)
+#    # separate title call (R base graphics) for nicer line adjustment, just cosmetics
+#    title(paste("pi2Div =", n), line = -1.2)
+#  }
+#  par(op) # reset graphics parameters to previous values
 
 ## ----figure_5, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with three different settings of `pi2Div` and `pType = "pma"`.'----
 # divide graphics device into three regions and adjust plot margins 
@@ -91,17 +92,17 @@ par(op) # reset graphics parameters to previous values
 #                xlab = "real", ylab = "imaginary", nCores = 2)
 #  par(op) # reset graphics parameters to previous values
 
-## ----figure_8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'----
-# divide graphics device into three regions and adjust plot margins 
-op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
-for(n in c(6, 9, 18)) {
-  phasePortrait("exp(z)", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
-                pi2Div = n, pType = "pma", axes = FALSE, nCores = 2)
-  # separate title call (R base graphics) for nicer line adjustment, just cosmetics
-  title(paste("pi2Div = ", n, ", logBase = exp(2*pi/pi2Div)", sep = ""), 
-        line = -1.2, cex.main = 0.9) 
-}
-par(op) # reset graphics parameters to previous values
+## ----eval=FALSE, figure_8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'----
+#  # divide graphics device into three regions and adjust plot margins
+#  op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
+#  for(n in c(6, 9, 18)) {
+#    phasePortrait("exp(z)", xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5),
+#                  pi2Div = n, pType = "pma", axes = FALSE, nCores = 2)
+#    # separate title call (R base graphics) for nicer line adjustment, just cosmetics
+#    title(paste("pi2Div = ", n, ", logBase = exp(2*pi/pi2Div)", sep = ""),
+#          line = -1.2, cex.main = 0.9)
+#  }
+#  par(op) # reset graphics parameters to previous values
 
 ## ----eval=FALSE, figure_9, fig.width=5, fig.height=5, fig.show='hold', results='hide', cache=TRUE, fig.cap='Tuning reference zone contrast with the parameters `darkestShade` (column-wise, 0, 0.2, 0.4), and `lambda` (row-wise, 0.1, 1, 10).'----
 #  op <- par(mfrow = c(3, 3), mar = c(0.2, 0.2, 0.2, 0.2))
@@ -253,12 +254,52 @@ par(op)
 #                nCores = 1, # Increase or leave out for higher performance
 #                xlim = xlim, ylim = ylim,
 #                hsvNaN = c(0, 0, 0),
-#                tempDir = tempDir,
 #                xaxs = "i", yaxs = "i",
 #                axes = FALSE,
 #                res = res)
 #  par(op)
 #  dev.off()
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  # Map the complex plane on itself, show all bwType options
+#  
+#  x11(width = 8, height = 8)
+#  op <- par(mfrow = c(2, 2), mar = c(4.1, 4.1, 1.1, 1.1))
+#  for(bwType in c("ma", "a", "m")) {
+#    phasePortraitBw("z", xlim = c(-2, 2), ylim = c(-2, 2),
+#                    bwType = bwType,
+#                    xlab = "real", ylab = "imaginary",
+#                    nCores = 2) # Increase or leave out for higher performance
+#  }
+#  # Add normal phase portrait for comparison
+#  phasePortrait("z", xlim = c(-2, 2), ylim = c(-2, 2),
+#                xlab = "real", ylab = "imaginary",
+#                pi2Div = 18,         # Use same angular division as default
+#                                     # in phasePortraitBw
+#                nCores = 2)     # Increase or leave out for higher performance
+#  par(op)
+#  
+
+## ----eval=FALSE---------------------------------------------------------------
+#  # A rational function, show all bwType options
+#  
+#  x11(width = 8, height = 8)
+#  funString <- "(z + 1.4i - 1.4)^2/(z^3 + 2)"
+#  op <- par(mfrow = c(2, 2), mar = c(4.1, 4.1, 1.1, 1.1))
+#  for(bwType in c("ma", "a", "m")) {
+#    phasePortraitBw(funString, xlim = c(-2, 2), ylim = c(-2, 2),
+#                    bwType = bwType,
+#                    xlab = "real", ylab = "imaginary",
+#                    nCores = 2) # Increase or leave out for higher performance
+#  }
+#  # Add normal phase portrait for comparison
+#  phasePortrait(funString, xlim = c(-2, 2), ylim = c(-2, 2),
+#                xlab = "real", ylab = "imaginary",
+#                pi2Div = 18,         # Use same angular division as default
+#                                     # in phasePortraitBw
+#                nCores = 2)     # Increase or leave out for higher performance
+#  par(op)
+#  
 
 ## ---- eval = FALSE------------------------------------------------------------
 #  # Set the plot margins at all four sides to 1/5 inch with mai,

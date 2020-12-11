@@ -1,5 +1,5 @@
 ---
-title: "Phase Portraits of Complex Valued Functions with the R Package *viscomplexr*"
+title: "Phase Portraits of Complex Functions with the R Package *viscomplexr*"
 author: "Peter Biber"
 output: rmarkdown::html_vignette
 header-includes: \usepackage{amsmath}
@@ -17,8 +17,9 @@ knitr::opts_chunk$set(
 )
 
 # This option anti-aliases the plots made below under Windows
-if(Sys.info()[["sysname"]] == "Windows")
-  knitr::opts_chunk$set(dev.args = list(type = "cairo"))
+if(Sys.info()[["sysname"]] == "Windows") {
+  knitr::opts_chunk$set(dev = "CairoPNG")
+}
 
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
@@ -29,7 +30,7 @@ library(viscomplexr)
 ```
 
 ## Introduction
-The **R** package *viscomplexr* has been written as a visualization tool for complex valued functions. More precisely, it provides functionality for making *phase portraits* of such functions, following conventions described by Wegert in his book *Visual Complex Functions* [@wegert_visualcpx_2012]. Conceptually, the package is intended for being used inside the framework of **R**'s base graphics, i.e. users of this package can freely utilize all features of base graphics for obtaining an optimum result, be it for scientific or artistic purposes. This vignette is not at all an introduction to function theory or an exhaustive treatment of what can be done with phase portraits - I recommend Wegert's book for an ideal combination of both; the purpose of this vignette is in fact to make the reader acquainted with the technical features the package provides in a step-by-step process.
+The **R** package *viscomplexr* has been written as a visualization tool for complex functions. More precisely, it provides functionality for making *phase portraits* of such functions. The method, sometimes called *domain coloring*, exists in [many sub-varieties](https://en.wikipedia.org/wiki/Domain_coloring). However, from the author's point of view, the style proposed by E. Wegert in his book *Visual Complex Functions* [@wegert_visualcpx_2012] comes with a particular clarity and a special aesthetic appeal at the same time. Therefore, this package closely follows Wegert's conventions. Conceptually, the package is intended for being used inside the framework of **R**'s base graphics, i.e. users of this package can freely utilize all features of base graphics for obtaining an optimum result, be it for scientific or artistic purposes. This vignette is not at all an introduction to function theory or an exhaustive treatment of what can be done with phase portraits - I recommend Wegert's book for an ideal combination of both; the purpose of this vignette is in fact to make the reader acquainted with the technical features the package provides in a step-by-step process.
 
 Due to the size restriction of CRAN packages, the number of illustrations in this vignette is kept to a minimum. Readers are encouraged to run all code examples shown below (and hopefully enjoy what they see), but especially those where we explicitly invite them to do so.
 
@@ -100,9 +101,9 @@ par(op) # reset the graphics parameters to their previous values
 
 The resulting figure nicely displays the function's two zeroes and the pole. Note that all colors meet in zeroes and poles. Around zeroes, the colors cycle counterclockwise in the order red, green, blue, while this order is reversed around poles. For $n$<sup>th</sup> order ($n\in\mathbb{N}$) zeroes and poles, the cycle is passed through $n$ times. I recommend to check this out with examples of your own.
 
-Now, suppose we want to change the density of the reference lines for the phase angle $\varphi$. This can be done by way of the argument `pi2Div`. For usual applications, `pi2Div` should be a natural number $n\:(n\in\mathbb{N})$. It defines the angle $\Delta\varphi$ between two adjacent reference lines as a fraction of the round angle, i.e. $\Delta\varphi=\frac{2\pi}{n}$. The default value of `pi2Div` is 9, i.e. $\Delta\varphi=\frac{2\pi}{9}=40°$. Let's plot our function in three flavors of `pi2Div`, namely, 6, 9 (the default), and 18, resulting in $\Delta\varphi$ values of $\frac{\pi}{3}=60°$, $\frac{2\pi}{9}=40°$, and $\frac{\pi}{9}=20°$. In order to suppress the iso-modulus lines and display the argument reference lines only, we are using `pType = "pa"`.
+Now, suppose we want to change the density of the reference lines for the phase angle $\varphi$. This can be done by way of the argument `pi2Div`. For usual applications, `pi2Div` should be a natural number $n\:(n\in\mathbb{N})$. It defines the angle $\Delta\varphi$ between two adjacent reference lines as a fraction of the round angle, i.e. $\Delta\varphi=\frac{2\pi}{n}$. The default value of `pi2Div` is 9, i.e. $\Delta\varphi=\frac{2\pi}{9}=40°$. Let's plot our function in three flavors of `pi2Div`, namely, 6, 9 (the default), and 18, resulting in $\Delta\varphi$ values of $\frac{\pi}{3}=60°$, $\frac{2\pi}{9}=40°$, and $\frac{\pi}{9}=20°$. In order to suppress the iso-modulus lines and display the argument reference lines only, we are using `pType = "pa"`. Visualize this by running the code below (active 7" x 2.8" screen graphics device suggested, e.g. `x11(width = 7, height = 2.8)`).
 
-```{r figure_4, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with three different settings of `pi2Div` and `pType = "pa"`.'}
+```{r eval = FALSE, figure_4, fig.width=7, fig.height=2.8, results='hide', fig.align='center', , fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\frac{(3+2\\mathrm{i}+z)(-5+5\\mathrm{i}+z)}{(-2-2\\mathrm{i}+z)^2}$ portrayed with three different settings of `pi2Div` and `pType = "pa"`.'}
 # divide graphics device into three regions and adjust plot margins 
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
@@ -154,9 +155,9 @@ phasePortrait(exp, xlim = c(-8.5, 8.5), ylim = c(-8.5, 8.5), pType = "pm",
 par(op) # reset graphics parameters to previous values                         
 ```
 
-If we now define the argument `pi2Div` as a number $n\:(n\in\mathbb{N})$ and use it for determining the angular difference $\Delta\varphi=\frac{2\pi}{n}$ between two subsequent phase angle reference lines, our default link between `pi2Div` and `logBase` (which is the ratio $b$ of the moduli at two subsequent iso-modulus lines) establishes $b=\mathrm{e}^{\Delta\varphi}$. This means, if we add $\Delta\varphi$ to the argument of any $w=\mathrm{e}^z\:(z\in\mathbb{C})$ or increase its modulus by the factor $\mathrm{e}^{\Delta\varphi}$, both are equidistant reference line steps in a plot of $f(z)=\mathrm{e}^z$. We visualize this with the following **R** code:
+If we now define the argument `pi2Div` as a number $n\:(n\in\mathbb{N})$ and use it for determining the angular difference $\Delta\varphi=\frac{2\pi}{n}$ between two subsequent phase angle reference lines, our default link between `pi2Div` and `logBase` (which is the ratio $b$ of the moduli at two subsequent iso-modulus lines) establishes $b=\mathrm{e}^{\Delta\varphi}$. This means, if we add $\Delta\varphi$ to the argument of any $w=\mathrm{e}^z\:(z\in\mathbb{C})$ or increase its modulus by the factor $\mathrm{e}^{\Delta\varphi}$, both are equidistant reference line steps in a plot of $f(z)=\mathrm{e}^z$. You can visualize this with the following **R** code (active 7" x 2.8" screen graphics device suggested, e.g. `x11(width = 7, height = 2.8)`):
 
-```{r figure_8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'}
+```{r eval=FALSE, figure_8, fig.width=7, fig.height=2.8, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='The function $f(z)=\\mathrm{e}^z$ portrayed with the default coupling of `pi2Div` and `logBase` as implemented in *phasePortrait*.'}
 # divide graphics device into three regions and adjust plot margins 
 op <- par(mfrow = c(1, 3), mar = c(0.2, 0.2, 0.4, 0.2))
 for(n in c(6, 9, 18)) {
@@ -294,7 +295,7 @@ While visualizing fractals is not among the original purposes of this package, *
 The classic visualizations of the Mandelbrot and the Julia set use a uniform color (usually black) for all points which belong to the set and color the points outside the set dependent on how quickly they diverge. Visualizations with *phasePortrait*, in contrast, color the points inside the sets by the argument and modulus of the number to which the series described above converges (or, more precisely, at which the iteration terminates). While the results are visually appealing (please try the code examples we provide below), they are not unambiguous, as the sequences that define the sets do not always converge to one single value, but to limit cycles. 
 
 The following code plots an overview picture of the Mandelbrot set. Note that the function `mandelbrot` is called with a considerably low value (30) for the parameter `itDepth` which defines the number of iterations to be calculated (default is 500). This is because we are using *phasePortrait* for plotting into a graphics window with a comparatively low resolution (see section [defining image quality](#img_qual) for how to obtain high-quality phase portraits). While a high number of iterations produces a more accurate representation of the set, the resulting filigree structures might become hardly visible or even invisible when the resolution to be plotted on is low.
-
+ 
 ```{r, eval=FALSE}
 x11(width = 8, height = 2/3 * 8)      # Open graphics window on screen
 op <- par(mar = c(0, 0, 0, 0))        # Do not leave plot margins
@@ -370,13 +371,63 @@ phasePortrait(juliaNormal,
               nCores = 1, # Increase or leave out for higher performance
               xlim = xlim, ylim = ylim,
               hsvNaN = c(0, 0, 0),
-              tempDir = tempDir,
               xaxs = "i", yaxs = "i",
               axes = FALSE,
               res = res)
 par(op)
 dev.off()
 ```
+
+### Phase portraits based on a polar chessboard
+
+Since version 1.1.0, *viscomplexr* provides the function `phasePortraitBw` which allows for creating two-color phase portraits of complex functions based on a polar chessboard grid (cf. @wegert_visualcpx_2012, p. 35). Compared to the full phase portraits that can be made with `phasePortrait`, two-color portraits omit information. Especially in combination with full phase portraits they can be, however, very helpful tools for interpretation. Besides, two-color phase portraits have a special aesthetic appeal which is worth exploring for itself. In its parameters and its mode of operation, `phasePortraitBw` is very similar to `phasePortrait` (see the documentations of both functions for details). The parameters `pi2Div` and `logBase` have exactly the same effect as with `phasePortrait`. Instead of the parameter `pType`, `phasePortraitBw` has the parameter `bwType` which allows for the three settings "m", "a", and "ma". These produce two-color phase portraits which take into account the modulus only, the argument (phase angle), only, and the combination of both, respectively. Plots made with the latter option show a chessboard-like color alteration over the tiles resulting from the intersection of modulus and argument zones. The following code maps the complex plane to itself, comparing all three options of `bwType`. It also adds a standard phase portrait for comparison.
+
+```{r, eval=FALSE}
+# Map the complex plane on itself, show all bwType options
+
+x11(width = 8, height = 8)
+op <- par(mfrow = c(2, 2), mar = c(4.1, 4.1, 1.1, 1.1))
+for(bwType in c("ma", "a", "m")) {
+  phasePortraitBw("z", xlim = c(-2, 2), ylim = c(-2, 2),
+                  bwType = bwType,
+                  xlab = "real", ylab = "imaginary",
+                  nCores = 2) # Increase or leave out for higher performance
+}
+# Add normal phase portrait for comparison
+phasePortrait("z", xlim = c(-2, 2), ylim = c(-2, 2),
+              xlab = "real", ylab = "imaginary",
+              pi2Div = 18,         # Use same angular division as default
+                                   # in phasePortraitBw
+              nCores = 2)     # Increase or leave out for higher performance
+par(op)
+
+```
+
+Note that the parameter `pi2Div` should not be chosen as an odd number when working with `phasePortraitBw`. In this case, the first and the last phase angle zone would obtain the same color, which is probably an undesired effect for most applications. While `pi2Div = 9` is the default setting in `phasePortrait` for good reasons (see above), its default in `phasePortraitBw` is 18. Also by default, the parameter `logBase` is linked to `pi2Div` in the same way as by default in `phasePortrait` (`logBase = exp(2*pi/pi2Div)`). So, if defaults for both, `phasePortrait` and `phasePortraitBw` are used, each zone of the former covers two zones of the latter. In the code above, however, `pi2Div` was set to 18 also in the call to `phasePortrait` for direct comparability. This is also the case in the code below, which displays a rational function.
+
+```{r eval=FALSE}
+# A rational function, show all bwType options
+
+x11(width = 8, height = 8)
+funString <- "(z + 1.4i - 1.4)^2/(z^3 + 2)"
+op <- par(mfrow = c(2, 2), mar = c(4.1, 4.1, 1.1, 1.1))
+for(bwType in c("ma", "a", "m")) {
+  phasePortraitBw(funString, xlim = c(-2, 2), ylim = c(-2, 2),
+                  bwType = bwType,
+                  xlab = "real", ylab = "imaginary",
+                  nCores = 2) # Increase or leave out for higher performance
+}
+# Add normal phase portrait for comparison
+phasePortrait(funString, xlim = c(-2, 2), ylim = c(-2, 2),
+              xlab = "real", ylab = "imaginary",
+              pi2Div = 18,         # Use same angular division as default
+                                   # in phasePortraitBw
+              nCores = 2)     # Increase or leave out for higher performance
+par(op)
+
+```
+
+While the letters 'Bw' in `phasePortraitBw` stand for 'black/white', the natural colors for such chessboard plots, the user is not limited to these. The choice of colors is defined by the parameter `bwCols` which, by default, is set as `bwCols = c("black", "gray95", "gray")`. The first and the second color are used for coloring the alternating zones, while the last color is used in cases where the function of interest produces results which cannot be sufficiently evaluated for modulus or argument (`NaN`, partly `Inf`). Note that the second color, `"gray95"` is almost, but not exactly white, which contrasts 'white' tiles against a white background in a visually unobtrusive way. The parameter `bwCols` can be freely changed; values must be either color names that **R** can interpret (call `colors()` for a list) or hexadecimal color strings like e.g. `"#00FF32"` (the format is `"#RRGGBB"` with 'RR', 'GG', and 'BB' representing red, green, and blue with an allowed value range of `00` to `FF` for each).
 
 
 ## Aesthetic hints {#hints_artistic}
