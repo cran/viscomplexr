@@ -115,36 +115,36 @@ par(op) # reset graphics parameters to previous values
 #  }
 #  par(op)
 
-## ----figure_10, fig.width=7, fig.height=2.7, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='Three phase portraits with branch cuts (dashed line), illustrating the three values of $f(z)=z^{1/3}$, $z \\in \\mathbb{C} \\setminus \\lbrace 0 \\rbrace$. The transitions between the phase portraits are indicated by same-coloured arrows pointing at the branch cuts.'----
-op <- par(mfrow = c(1, 3), mar = c(0.4, 0.2, 0.2, 0.2))
-for(k in 0:2) {
-  FUNstring <- paste0("z^(1/3) * exp(1i * 2*pi/3 * ", k, ")")
-  phasePortrait(FUN = FUNstring, 
-                xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5), pi2Div = 12, 
-                axes = FALSE, nCores = 2)
-  title(sub = paste0("k = ", k), line = -1)
-  # emphasize branch cut with a dashed line segment
-  segments(-1.5, 0, 0, 0, lwd = 2, lty = "dashed") 
-  # draw colored arrows
-  upperCol <- switch(as.character(k),
-                     "0" = "black", "1" = "red", "2" = "green")
-  lowerCol <- switch(as.character(k),
-                     "0" = "green", "1" = "black", "2" = "red")
-  arrows(x0 = c(-1.2), y0 = c(1, -1), y1 = c(0.2, -0.2), 
-         lwd = 2, length = 0.1, col = c(upperCol, lowerCol))
-}
-par(op)
+## ----eval=FALSE, figure_10, fig.width=7, fig.height=2.7, results='hide', fig.align='center', fig.show='hold', cache=TRUE, fig.cap='Three phase portraits with branch cuts (dashed line), illustrating the three values of $f(z)=z^{1/3}$, $z \\in \\mathbb{C} \\setminus \\lbrace 0 \\rbrace$. The transitions between the phase portraits are indicated by same-coloured arrows pointing at the branch cuts.'----
+#  op <- par(mfrow = c(1, 3), mar = c(0.4, 0.2, 0.2, 0.2))
+#  for(k in 0:2) {
+#    FUNstring <- paste0("z^(1/3) * exp(1i * 2*pi/3 * ", k, ")")
+#    phasePortrait(FUN = FUNstring,
+#                  xlim = c(-1.5, 1.5), ylim = c(-1.5, 1.5), pi2Div = 12,
+#                  axes = FALSE, nCores = 2)
+#    title(sub = paste0("k = ", k), line = -1)
+#    # emphasize branch cut with a dashed line segment
+#    segments(-1.5, 0, 0, 0, lwd = 2, lty = "dashed")
+#    # draw colored arrows
+#    upperCol <- switch(as.character(k),
+#                       "0" = "black", "1" = "red", "2" = "green")
+#    lowerCol <- switch(as.character(k),
+#                       "0" = "green", "1" = "black", "2" = "red")
+#    arrows(x0 = c(-1.2), y0 = c(1, -1), y1 = c(0.2, -0.2),
+#           lwd = 2, length = 0.1, col = c(upperCol, lowerCol))
+#  }
+#  par(op)
 
-## ----figure_11, fig.width=7, fig.height=2.7, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Three branches of $\\log z=\\log r+\\mathrm{i}\\cdot(\\varphi + k\\cdot2\\pi), r>0, \\varphi\\in\\left[0,2\\pi\\right[$, with $k=-1,0,1$. The branch cuts are marked with dashed white lines.'----
-op <- par(mfrow = c(1, 3), mar = c(0.4, 0.2, 0.2, 0.2))
-for(k in -1:1) {
-  FUNstring <- paste0("log(Mod(z)) + 1i * (Arg(z) + 2 * pi * ", k, ")") 
-  phasePortrait(FUN = FUNstring, pi2Div = 36,
-                xlim = c(-2, 2), ylim = c(-2, 2), axes = FALSE, nCores = 2)
-  segments(-2, 0, 0, 0, col = "white", lwd = 1, lty = "dashed")
-  title(sub = paste0("k = ", k), line = -1)
-}  
-par(op)
+## ----eval=FALSE, figure_11, fig.width=7, fig.height=2.7, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Three branches of $\\log z=\\log r+\\mathrm{i}\\cdot(\\varphi + k\\cdot2\\pi), r>0, \\varphi\\in\\left[0,2\\pi\\right[$, with $k=-1,0,1$. The branch cuts are marked with dashed white lines.'----
+#  op <- par(mfrow = c(1, 3), mar = c(0.4, 0.2, 0.2, 0.2))
+#  for(k in -1:1) {
+#    FUNstring <- paste0("log(Mod(z)) + 1i * (Arg(z) + 2 * pi * ", k, ")")
+#    phasePortrait(FUN = FUNstring, pi2Div = 36,
+#                  xlim = c(-2, 2), ylim = c(-2, 2), axes = FALSE, nCores = 2)
+#    segments(-2, 0, 0, 0, col = "white", lwd = 1, lty = "dashed")
+#    title(sub = paste0("k = ", k), line = -1)
+#  }
+#  par(op)
 
 ## ----figure_12, fig.width=7, fig.height=3.5, fig.align='center', results='hide', fig.show='hold', cache=TRUE, fig.cap='Mapping the complex number plane on the Riemann sphere. Left: lower (southern) hemisphere; right upper (northern hemisphere). Folding both figures face to face along a vertical line in the middle between them can be imagined as closing the Riemann sphere.'----
 op <- par(mfrow = c(1, 2), mar = rep(0.1, 4))
